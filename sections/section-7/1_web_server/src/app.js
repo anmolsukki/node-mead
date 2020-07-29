@@ -4,7 +4,19 @@ const path = require("path");
 const app = express();
 
 const publicDirPath = path.join(__dirname, "../public")
-app.use(express.static(publicDirPath))
+const viewsPath = path.join(__dirname, "../viewsFile")
+
+app.use('/pdr', express.static(publicDirPath));
+
+app.set('view engine', 'hbs');
+app.set("views", viewsPath)
+
+app.get("/hbs", (req, res) => {
+    res.render("index", {
+        title: "Dynamic",
+        name: "Anmol"
+    })
+})
 
 app.get("", (req, res) => {
     res.send("Hello Express!")
