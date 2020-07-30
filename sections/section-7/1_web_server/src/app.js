@@ -1,20 +1,24 @@
 const express = require("express");
 const path = require("path");
+const hbs = require("hbs")
 
 const app = express();
 
 const publicDirPath = path.join(__dirname, "../public")
 const viewsPath = path.join(__dirname, "../viewsFile")
+const partialsPath = path.join(__dirname, "../viewsPartial")
 
 app.use('/pdr', express.static(publicDirPath));
 
 app.set('view engine', 'hbs');
 app.set("views", viewsPath)
+hbs.registerPartials(partialsPath)
 
 app.get("/hbs", (req, res) => {
     res.render("index", {
         title: "Dynamic",
-        name: "Anmol"
+        name: "Anmol",
+        job: "Reactjs"
     })
 })
 
@@ -33,6 +37,6 @@ app.get("/about", (req, res) => {
     })
 })
 
-app.listen(3000, () => {
-    console.log("Serveris up on port 3000")
+app.listen(4000, () => {
+    console.log("Serveris up on port 4000")
 })
