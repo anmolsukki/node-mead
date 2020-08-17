@@ -10,6 +10,6 @@ app.use(express.json())
 app.use(userRoute)
 
 app.listen(port, () => {
-    console.log("Server is up on port", 3000)
+    console.log("Server is up on port", + port)
 })
 
