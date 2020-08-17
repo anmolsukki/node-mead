@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
+const auth = require("../middleware/auth");
 
 const userRoute = new express.Router()
 
@@ -12,12 +13,16 @@ userRoute.post("/users", (req, res) => {
     })
 })
 
-userRoute.get("/users", (req, res) => {
+userRoute.get("/users", auth, (req, res) => {
     User.find({}).then((user) => {
         res.status(200).send(user)
     }).catch((error) => {
         res.status(500).send(error)
     })
+})
+
+userRoute.get("/users/me", auth, (req, res) => {
+    res.send(req.user)
 })
 
 userRoute.get("/users/:id", (req, res) => {
@@ -65,6 +70,17 @@ userRoute.delete("/users/:id", async(req, res) => {
     }
     catch(error) {
         res.status(500).send()
+    }
+})
+
+userRoute.post("/users/login", async (req, res) => {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password)
+        const token = await user.generateAuthToken()
+        res.send({user, token})
+    }
+    catch (error) {
+        res.status(400).send()
     }
 })
 
