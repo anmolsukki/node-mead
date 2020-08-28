@@ -48,6 +48,12 @@ const userSchema = new mongoose.Schema({
     }]
 })
 
+userSchema.virtual("tasks", {
+    ref: "Task",
+    localField: "_id",
+    foreignField: "owner"
+})
+
 userSchema.methods.getPublicProfile = function() {
     const user = this
     const userObject = user.toObject()
@@ -86,6 +92,6 @@ userSchema.pre("save", async function(next) {
     next()
 })
 
-const User = mongoose.model("User", userSchema)
+const User = mongoose.model("User", userSchema, "user-list")
 
 module.exports = User;
