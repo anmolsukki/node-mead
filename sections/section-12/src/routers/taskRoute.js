@@ -27,4 +27,18 @@ taskRoute.get("/task", auth, async (req, res) => {
     }
 })
 
+taskRoute.get("/task/:id", auth, async (req, res) => {
+    const _id = req.params.id
+    try {
+        const task = await Task.findOne({ _id, owner: req.user._id })
+        if(!task) {
+            return res.status(404).send()
+        }
+        res.send(task)
+    }
+    catch(error) {
+        res.status(500).send()
+    }
+})
+
 module.exports = taskRoute;
