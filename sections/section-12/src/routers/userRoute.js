@@ -13,6 +13,7 @@ userRoute.post("/users", (req, res) => {
     })
 })
 
+// userRoute.use(auth)
 userRoute.get("/users", auth, (req, res) => {
     User.find({}).then((user) => {
         res.status(200).send(user)
