@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true // for not bunch of saces
+        trim: true // for not bunch of spaces
     },
     email: {
         type: String,
