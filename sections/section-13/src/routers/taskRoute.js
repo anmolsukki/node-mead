@@ -20,8 +20,13 @@ taskRoute.post("/task", auth, (req, res) => {
 // Get task?completed=true
 taskRoute.get("/task", auth, async (req, res) => {
     const match = {}
+    const sort = {}
     if(req.query.completed) {
         match.completed = (req.query.completed === "true")
+    }
+    if(req.query.sortBy) {
+        const parts = req.query.sortBy.split(":")
+        sort[parts[0]] = parts[1] === "desc" ? -1 : 1
     }
     try {
         await req.user.populate({
@@ -30,9 +35,10 @@ taskRoute.get("/task", auth, async (req, res) => {
             options: {
                 limit: parseInt(req.query.limit),
                 skip: parseInt(req.query.skip),
-                sort: {
-                    completed: -1
-                }
+                // sort: {
+                //     completed: -1
+                // },
+                sort
             }
         }).execPopulate()
         res.send(req.user.tasks)
