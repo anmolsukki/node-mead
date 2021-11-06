@@ -31,6 +31,9 @@ taskRoute.get("/task", auth, async (req, res) => {
     try {
         await req.user.populate({
             path: "tasks",
+            // match: {
+            //     completed : true 
+            // },
             match,
             options: {
                 limit: parseInt(req.query.limit),
